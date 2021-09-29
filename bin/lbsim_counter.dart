@@ -1,11 +1,11 @@
 import 'dart:io';
 
 void main(List<String> arguments) {
-  int operationValue;
-  int function;
+  int value;
+  int choice;
   bool stop = false;
   String? tempInput;
-  LBSIMCounter lbsimCounter;
+  LBSIMCounter lbsimCounter; //constructor
 
   // take input for incrementValue     String?  !=  String
 
@@ -20,65 +20,75 @@ void main(List<String> arguments) {
   } else {
     return;
   }
-
+  print('Base Value is ${lbsimCounter.count}');
   while (!stop) {
     print('Enter operational value');
     tempInput = stdin.readLineSync();
 
     if (tempInput != null && tempInput.isNotEmpty) {
       print('tempInput is : $tempInput');
-      operationValue = int.parse(tempInput);
+      value = int.parse(tempInput);
     } else {
-      operationValue = 0;
+      value = 0;
+      print("No Value is entered!!");
     }
 
     print('''
     Enter your choice
-    0. Print value
+    0. Print current value
     1. Increment
     2. Decrement
     3. Multiply 
     4. Divide
     5. Reminder
     6. Change User Name
-    10. Stop the operation
+    7. Stop the operation
   ''');
 
     tempInput = stdin.readLineSync();
 
     if (tempInput != null && tempInput.isNotEmpty) {
-      function = int.parse(tempInput);
+      choice = int.parse(tempInput);
     } else {
-      function = -1;
+      choice = -1;
     }
 
     print('starting counter with value: ${lbsimCounter.count}');
 
-    switch (function) {
+    switch (choice) {
       case 0:
         print(lbsimCounter.count);
         break;
       case 1:
-        incrementCounter(counter: lbsimCounter, incrementValue: operationValue);
+        incrementCounter(counter: lbsimCounter, incrementValue: value);
         break;
       case 2:
-        decrementCounter(counter: lbsimCounter, decrementValue: operationValue);
+        decrementCounter(counter: lbsimCounter, decrementValue: value);
         break;
       case 3:
-        changeUserName(counter: lbsimCounter);
+        multiplyCounter(counters: lbsimCounter, mul_value: value);
+        break;
+      case 4:
+        divCounter(counters: lbsimCounter, div_value: value);
         break;
       case 5:
+        remCounter(counters: lbsimCounter, div_value: value);
+        break;
+      case 6:
+        changeUserName(counter: lbsimCounter);
+        break;
+      case 7:
         stop = true;
         break;
       default:
-        print('Are kuch to kr');
+        print('Tumse na ho paega :(');
     }
     print(
         'Current value of count is ${lbsimCounter.count} by ${lbsimCounter.userName}');
   }
 
   print(
-      'Final value of count is ${lbsimCounter.count} ${lbsimCounter.userName}');
+      'Final value of count is ${lbsimCounter.count}  by ${lbsimCounter.userName}');
 }
 
 void changeUserName({required LBSIMCounter counter}) {
@@ -96,7 +106,19 @@ void incrementCounter(
 
 void decrementCounter(
     {required LBSIMCounter counter, required int decrementValue}) {
-  counter.count = counter.count + decrementValue;
+  counter.count = counter.count - decrementValue;
+}
+
+void multiplyCounter({required LBSIMCounter counters, required int mul_value}) {
+  counters.count = counters.count * mul_value;
+}
+
+void divCounter({required LBSIMCounter counters, required int div_value}) {
+  counters.count = (counters.count / div_value).round();
+}
+
+void remCounter({required LBSIMCounter counters, required int div_value}) {
+  counters.count = counters.count % div_value;
 }
 
 class LBSIMCounter {
